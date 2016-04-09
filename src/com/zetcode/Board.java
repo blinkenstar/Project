@@ -12,14 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 public class Board extends JPanel implements ActionListener {
 
-    private final int B_WIDTH = 300;
-    private final int B_HEIGHT = 300;
+    private final int B_WIDTH = 400;
+    private final int B_HEIGHT = 400;
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
@@ -42,16 +40,16 @@ public class Board extends JPanel implements ActionListener {
     private Image ball;
     private Image apple;
     private Image head;
+    private Image bg;
 
     public Board() {
 
-        addKeyListener(new TAdapter());
-        setBackground(Color.black);
-        setFocusable(true);
-
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-        loadImages();
-        initGame();
+        this.addKeyListener(new TAdapter());
+        // this.setBackground(Color.black);
+        this.setFocusable(true);
+        this.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+        this.loadImages();
+        this.initGame();
     }
 
     private void loadImages() {
@@ -64,6 +62,9 @@ public class Board extends JPanel implements ActionListener {
 
         ImageIcon iih = new ImageIcon("resources/head.png");
         head = iih.getImage();
+
+        ImageIcon iib = new ImageIcon("resources/background.jpg");
+        bg = iib.getImage();
     }
 
     private void initGame() {
@@ -84,7 +85,7 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
         doDrawing(g);
     }
 
@@ -93,7 +94,6 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
 
             g.drawImage(apple, apple_x, apple_y, this);
-
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
                     g.drawImage(head, x[z], y[z], this);
@@ -179,7 +179,7 @@ public class Board extends JPanel implements ActionListener {
             inGame = false;
         }
 
-        if(!inGame) {
+        if (!inGame) {
             timer.stop();
         }
     }
