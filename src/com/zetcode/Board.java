@@ -41,11 +41,13 @@ public class Board extends JPanel implements ActionListener {
     private Image apple;
     private Image head;
     private Image bg;
+    private Image gameOver;
+
+    private int length = 3;
 
     public Board() {
 
         this.addKeyListener(new TAdapter());
-        // this.setBackground(Color.black);
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         this.loadImages();
@@ -65,6 +67,9 @@ public class Board extends JPanel implements ActionListener {
 
         ImageIcon iib = new ImageIcon("resources/background.jpg");
         bg = iib.getImage();
+
+        ImageIcon iiGameOver = new ImageIcon("resources/Game-over-pixels.png");
+        gameOver = iiGameOver.getImage();
     }
 
     private void initGame() {
@@ -86,7 +91,18 @@ public class Board extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+        score(g);
         doDrawing(g);
+    }
+
+    private void score(Graphics g) {
+        String msg = "Score: " + String.valueOf(this.dots);
+        Font small = new Font("Helvetica", Font.BOLD, 20);
+        FontMetrics metr = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)), 20);
     }
 
     private void doDrawing(Graphics g) {
@@ -112,13 +128,17 @@ public class Board extends JPanel implements ActionListener {
 
     private void gameOver(Graphics g) {
 
+        g.drawImage(this.gameOver, ((B_WIDTH / 2) - 178 / 2), ((B_HEIGHT / 2 )- 178 / 2), this);
+
+        /* draw text
         String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
+        Font small = new Font("Helvetica", Font.BOLD, 30);
         FontMetrics metr = getFontMetrics(small);
 
-        g.setColor(Color.white);
+        g.setColor(Color.red);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+        */
     }
 
     private void checkApple() {
